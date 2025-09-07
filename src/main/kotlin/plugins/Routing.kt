@@ -19,6 +19,19 @@ fun Application.configureRouting() {
 
     routing {
 
+        get("/error"){
+            throw Exception("Some error occured")
+        }
+        get("/error/bad"){
+            call.respond(HttpStatusCode.BadRequest)
+        }
+        get("/error/unauthorized"){
+            call.respond(HttpStatusCode.Unauthorized)
+        }
+        get("/error/notfound"){
+            call.respond(HttpStatusCode.NotFound)
+        }
+
         post("/users"){
             val user = call.receiveNullable<User>() ?: return@post call.respond(HttpStatusCode.BadRequest)
             user.id = Random.nextInt(1, Int.MAX_VALUE)
