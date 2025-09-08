@@ -1,6 +1,7 @@
 package com.example.plugins
 
-import com.example.User
+import com.example.models.Message
+import com.example.models.User
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.content.PartData
 import io.ktor.http.content.forEachPart
@@ -14,13 +15,59 @@ import io.ktor.server.request.receiveNullable
 import io.ktor.server.request.receiveParameters
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import io.ktor.server.websocket.webSocket
 import io.ktor.util.cio.writeChannel
 import io.ktor.utils.io.copyAndClose
+import io.ktor.websocket.CloseReason
+import io.ktor.websocket.Frame
+import io.ktor.websocket.WebSocketSession
+import io.ktor.websocket.close
+import io.ktor.websocket.readText
+import io.ktor.websocket.send
+import kotlinx.coroutines.channels.consumeEach
+import kotlinx.serialization.json.Json
 import java.io.File
+import java.util.concurrent.ConcurrentHashMap
 import kotlin.random.Random
 
 fun Application.configureRouting() {
+
+    val onlineUsers = ConcurrentHashMap<String, WebSocketSession>()
     routing {
+
+
+        webSocket("/chat"){
+            val username = call.request.queryParameters["username"] ?: run {
+                this.close(CloseReason(CloseReason.Codes.CANNOT_ACCEPT, "username is required to establish connexion"))
+                return@webSocket
+            }
+
+            onlineUsers[username] = this
+
+            send("You are connected")
+
+            try {
+                incoming.consumeEach { frame ->
+                    if (frame is Frame.Text){
+                        val message = Json.decodeFromString<Message>(frame.readText())
+                        if (message.to.isNullOrBlank()){
+                            onlineUsers.values.forEach {
+                                it.send("$username: ${message.text}")
+                            }
+                        }else{
+                            val session = onlineUsers[message.to]
+                            session?.send("$username: ${message.text}")
+                        }
+                    }
+                }
+            }finally {
+                onlineUsers.remove(username)
+                this.close()
+            }
+
+
+
+        }
 
         route("message") {
 
