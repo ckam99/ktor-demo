@@ -24,4 +24,5 @@ dependencies {
     implementation(libs.ktor.server.request.validation)
     implementation(libs.ktor.server.call.logging)
     implementation(libs.ktor.server.websockets)
+    implementation(libs.ktor.server.sse)
 }

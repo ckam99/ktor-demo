@@ -9,11 +9,9 @@ import kotlin.time.Duration.Companion.seconds
 
 fun Application.configureWebSockets(){
     install(WebSockets){
-        pingPeriod = 10.seconds // Garder la connexion active
-        timeout = 15.seconds // Déconnexion si inactivité trop longue
-
-        maxFrameSize = Long.MAX_VALUE // Accepter de très grandes trames
-
-        masking = false // Ne pas masquer les messages serveur
+        pingPeriod = 10.seconds
+        timeout = 15.seconds
+        maxFrameSize = Long.MAX_VALUE
+        masking = false
     }
 }

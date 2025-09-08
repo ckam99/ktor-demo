@@ -3,6 +3,7 @@ package com.example
 import com.example.plugins.configureLogging
 import com.example.plugins.configureRequestValidation
 import com.example.plugins.configureRouting
+import com.example.plugins.configureSSE
 import com.example.plugins.configureSerialization
 import com.example.plugins.configureStatusPage
 import com.example.plugins.configureWebSockets
@@ -15,6 +16,7 @@ fun main(args: Array<String>) {
 fun Application.module() {
     configureLogging()
     configureWebSockets()
+    configureSSE()
     configureRouting()
     configureSerialization()
     configureStatusPage()
