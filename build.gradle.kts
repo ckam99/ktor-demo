@@ -25,4 +25,6 @@ dependencies {
     implementation(libs.ktor.server.call.logging)
     implementation(libs.ktor.server.websockets)
     implementation(libs.ktor.server.sse)
+    implementation(libs.ktor.server.auth)
+    implementation(libs.ktor.server.auth.jwt)
 }

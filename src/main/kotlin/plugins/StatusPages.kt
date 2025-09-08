@@ -25,11 +25,11 @@ fun Application.configureStatusPage(){
             call.respondText("401: you are not authorized to access to resource", status = HttpStatusCode.Unauthorized)
         }
 
-        statusFile(
-            HttpStatusCode.BadRequest,
-            HttpStatusCode.Unauthorized,
-            HttpStatusCode.NotFound,
-            filePattern = "template/error/#.html"
-        )
+//        statusFile(
+//            HttpStatusCode.BadRequest,
+//            HttpStatusCode.Unauthorized,
+//            HttpStatusCode.NotFound,
+//            filePattern = "template/error/#.html"
+//        )
     }
 }
