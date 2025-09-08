@@ -15,7 +15,9 @@ import io.ktor.server.request.receiveNullable
 import io.ktor.server.request.receiveParameters
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import io.ktor.server.sse.sse
 import io.ktor.server.websocket.webSocket
+import io.ktor.sse.ServerSentEvent
 import io.ktor.util.cio.writeChannel
 import io.ktor.utils.io.copyAndClose
 import io.ktor.websocket.CloseReason
@@ -25,6 +27,7 @@ import io.ktor.websocket.close
 import io.ktor.websocket.readText
 import io.ktor.websocket.send
 import kotlinx.coroutines.channels.consumeEach
+import kotlinx.coroutines.delay
 import kotlinx.serialization.json.Json
 import java.io.File
 import java.util.concurrent.ConcurrentHashMap
@@ -67,6 +70,13 @@ fun Application.configureRouting() {
 
 
 
+        }
+
+        sse("events"){
+            repeat(6){
+                send(ServerSentEvent("Event: ${it + 1}"))
+                delay(1000L)
+            }
         }
 
         route("message") {
