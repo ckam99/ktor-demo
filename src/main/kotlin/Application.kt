@@ -1,14 +1,17 @@
 package com.example
 
-import com.example.plugins.JwtConfig
-import com.example.plugins.configureJWTAuthentication
+import com.example.config.Config
+import com.example.config.JwtConfig
+import com.example.plugins.configureSecurity
 import com.example.plugins.configureLogging
 import com.example.plugins.configureRequestValidation
 import com.example.plugins.configureRouting
-import com.example.plugins.configureSSE
 import com.example.plugins.configureSerialization
-import com.example.plugins.configureStatusPage
+import com.example.plugins.configureErrorHandling
 import com.example.plugins.configureWebSockets
+import com.example.repository.UserRepository
+import com.example.service.JwtService
+import com.example.service.UserService
 import io.ktor.server.application.*
 import io.ktor.server.config.getAs
 
@@ -18,24 +21,25 @@ fun main(args: Array<String>) {
 
 fun Application.module() {
 
-    val jwtVar = environment.config.config("ktor.jwt")
-
-    val jwtConfig = JwtConfig(
-        secret = jwtVar.property("secret").getString(),
-        audience = jwtVar.property("audience").getString(),
-        issuer = jwtVar.property("issuer").getString(),
-        realm = jwtVar.property("realm").getString(),
-        expiry = jwtVar.property("expiry").getAs() as Long,
+    val config = Config(
+        jwt = JwtConfig(
+            secret = environment.config.property("jwt.secret").getString(),
+            audience = environment.config.property("jwt.audience").getString(),
+            issuer = environment.config.property("jwt.issuer").getString(),
+            realm = environment.config.property("jwt.realm").getString(),
+            expiry = environment.config.property("jwt.expiry").getAs() as Long,
+        )
     )
 
-    println(jwtConfig)
+    val userRepository = UserRepository()
+    val userService = UserService(userRepository)
+    val jwtService = JwtService(config = config.jwt, userService = userService)
 
-    configureJWTAuthentication(jwtConfig)
+    configureSecurity(jwtService)
     configureLogging()
-    configureWebSockets()
-    configureSSE()
-    configureRouting(jwtConfig)
+    configureWebSockets(userService, jwtService)
     configureSerialization()
-    configureStatusPage()
+    configureRouting(userService, jwtService)
+    configureErrorHandling()
     configureRequestValidation()
 }
