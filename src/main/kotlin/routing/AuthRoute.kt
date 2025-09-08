@@ -22,20 +22,16 @@ fun Route.authRoute(
         val form = call.receiveNullable<SignUpRequest>()
             ?: return@post call.respond(HttpStatusCode.BadRequest)
 
-        var user = userService.findByEmail(form.username)
-        if (user != null) {
-            return@post call.respondText("Username already exists", status = HttpStatusCode.BadRequest)
-        }
+        userService.findByEmail(form.username)
+            ?: return@post call.respondText("Username already exists", status = HttpStatusCode.BadRequest)
+
          userService.save(User(
              name = form.name,
              email = form.username,
              password = form.password
          ))
 
-        val token = jwtService.generateToken(form.username)
-            ?:  return@post call.respondText(
-                "Invalid credentials", status = HttpStatusCode.Unauthorized
-            )
+        val token = jwtService.generateToken(form.username, "USER")
         call.respond(TokenResponse(token.token, expiredAt = token.expiry.toString()))
     }
 
@@ -46,10 +42,7 @@ fun Route.authRoute(
             ?:  return@post call.respondText(
                 "Invalid credentials", status = HttpStatusCode.Unauthorized
             )
-       val token = jwtService.generateToken(user.email)
-           ?:  return@post call.respondText(
-               "Invalid credentials", status = HttpStatusCode.Unauthorized
-           )
+       val token = jwtService.generateToken(user.email, user.role)
         call.respond(TokenResponse(token.token, expiredAt = token.expiry.toString()))
     }
 }
