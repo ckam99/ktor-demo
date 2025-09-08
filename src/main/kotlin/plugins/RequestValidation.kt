@@ -1,6 +1,6 @@
 package com.example.plugins
 
-import com.example.User
+import com.example.models.User
 import io.ktor.server.application.Application
 import io.ktor.server.application.install
 import io.ktor.server.plugins.requestvalidation.RequestValidation
