@@ -1,7 +1,7 @@
 package com.example.plugins
 
-import com.example.models.SignInRequest
-import com.example.models.SignUpRequest
+import com.example.routing.request.SignInRequest
+import com.example.routing.request.SignUpRequest
 import com.example.models.User
 import io.ktor.server.application.Application
 import io.ktor.server.application.install

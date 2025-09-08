@@ -5,24 +5,38 @@ import io.ktor.server.application.Application
 import io.ktor.server.application.install
 import io.ktor.server.plugins.requestvalidation.RequestValidationException
 import io.ktor.server.plugins.statuspages.StatusPages
-import io.ktor.server.plugins.statuspages.exception
-import io.ktor.server.plugins.statuspages.statusFile
 import io.ktor.server.response.respond
 import io.ktor.server.response.respondText
+import kotlinx.serialization.Serializable
 
-fun Application.configureStatusPage(){
+@Serializable
+data class ErrorHandling(
+    val error: String,
+    val message: String
+)
+
+fun Application.configureErrorHandling(){
     install(StatusPages){
 
         exception<Throwable>{call, cause ->
-            call.respondText("500: ${cause.message}", status = HttpStatusCode.InternalServerError)
+            println(cause)
+            return@exception  call.respond(
+                status = HttpStatusCode.InternalServerError,
+                message = ErrorHandling(error = "ERR_INTERNAL", message = cause.message ?: "Something wrong")
+            )
         }
 
         exception<RequestValidationException> { call, cause ->
+            println(cause)
             call.respond(HttpStatusCode.UnprocessableEntity, mapOf("errors" to cause.reasons))
         }
 
-        status(HttpStatusCode.Unauthorized){ call, _ ->
-            call.respondText("401: you are not authorized to access to resource", status = HttpStatusCode.Unauthorized)
+        status(HttpStatusCode.Unauthorized){ call, cause ->
+            println(cause)
+            return@status  call.respond(
+                status = HttpStatusCode.Unauthorized,
+                message = ErrorHandling(error = "ERR_UNAUTHORIZED", message = cause.description ?: "you are not authorized to access to resource")
+            )
         }
 
 //        statusFile(
