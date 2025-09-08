@@ -10,13 +10,13 @@ import org.slf4j.event.Level
 fun Application.configureLogging(){
     install(CallLogging){
         level = Level.INFO
-        filter { call ->
-            call.request.path().startsWith("/users")
-        }
+//        filter { call ->
+//            call.request.path().startsWith("/users")
+//        }
 
-        format { call ->
-            val name = call.parameters["name"] ?: "Unknow"
-            "User: $name, Method: ${call.request.httpMethod.value}, Path: ${call.request.path()}"
-        }
+//        format { call ->
+//            val name = call.parameters["name"] ?: "Unknow"
+//            "User: $name, Method: ${call.request.httpMethod.value}, Path: ${call.request.path()}"
+//        }
     }
 }

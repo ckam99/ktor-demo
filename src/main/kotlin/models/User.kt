@@ -7,4 +7,5 @@ data class User(
     var id: Int ? = null,
     val name: String,
     val email: String,
+    val password: String ? = null
 )
