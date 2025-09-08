@@ -20,12 +20,17 @@ class JwtService(
         .build()
 
 
-    fun generateToken(username: String, expireIn: Long ? = null): JwtToken? {
+    fun generateToken(
+        username: String,
+        role: String,
+        expireIn: Long ? = null
+    ): JwtToken {
         val expiredAt = Date(System.currentTimeMillis() + (expireIn ?: config.expiry))
         val token = JWT.create()
             .withAudience(config.audience)
             .withIssuer(config.issuer)
             .withClaim("username", username)
+            .withClaim("role", role)
             .withExpiresAt(expiredAt)
             .sign(Algorithm.HMAC256(config.secret))
         return  JwtToken(token = token, expiry = expiredAt)

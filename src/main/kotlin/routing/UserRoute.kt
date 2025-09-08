@@ -2,6 +2,7 @@ package com.example.routing
 
 import com.auth0.jwt.interfaces.Claim
 import com.example.models.User
+import com.example.plugins.authorized
 import com.example.routing.request.UserRequest
 import com.example.routing.request.toModel
 import com.example.routing.response.UserResponse
@@ -54,6 +55,12 @@ fun Route.userRoute(
            val user = extractPrincipalUsername(call)
                ?: return@get call.respond(HttpStatusCode.Unauthorized)
            call.respond( user.toResponse())
+       }
+
+       authorized("ADMIN"){
+           get("/admin"){
+               call.respondText("hello admin")
+           }
        }
 
        get("/{id}") {
