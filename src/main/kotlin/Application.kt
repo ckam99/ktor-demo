@@ -10,17 +10,12 @@ import com.example.plugins.configureRouting
 import com.example.plugins.configureSerialization
 import com.example.plugins.configureErrorHandling
 import com.example.plugins.configureWebSockets
-import com.example.repository.ExposedUserRepository
 import com.example.repository.JooqUserRepository
-import com.example.repository.UserRepository
 import com.example.service.JwtService
 import com.example.service.UserService
 import io.ktor.server.application.*
 import io.ktor.server.config.getAs
 import org.jooq.DSLContext
-import org.jooq.SQLDialect
-import org.jooq.impl.DSL
-import java.sql.DriverManager
 
 fun main(args: Array<String>) {
     io.ktor.server.netty.EngineMain.main(args)
