@@ -6,6 +6,7 @@ logback = "1.5.17"
 exposed = "0.61.0"
 postgres = "42.7.7"
 h2 = "2.3.232"
+flyway = "9.22.1"
 
 [libraries]
 ktor-server-core = { module = "io.ktor:ktor-server-core", version.ref = "ktor" }
@@ -28,6 +29,7 @@ postgresql = { module = "org.postgresql:postgresql", version.ref = "postgres" }
 h2 = { module = "com.h2database:h2", version.ref = "h2" }
 exposed-core = { module = "org.jetbrains.exposed:exposed-core", version.ref = "exposed" }
 exposed-jdbc = { module = "org.jetbrains.exposed:exposed-jdbc", version.ref = "exposed" }
+flyway-core = { module = "org.flywaydb:flyway-core", version.ref = "flyway" }
 
 [plugins]
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
