@@ -36,9 +36,11 @@ class JwtService(
         return  JwtToken(token = token, expiry = expiredAt)
     }
 
-    fun customValidator(credential: JWTCredential): JWTPrincipal ? {
+    suspend fun customValidator(credential: JWTCredential): JWTPrincipal ? {
         val username = extractUsername(credential)
-        val user = username?.let(userService::findByEmail)
+        val user = username?.let{
+            userService.findByEmail(it)
+        }
         return user?.let {
             if(audienceMatches(credential)){
                 JWTPrincipal(credential.payload)
@@ -53,6 +55,5 @@ class JwtService(
     private fun extractUsername(credential: JWTCredential) : String? {
         return credential.payload.getClaim("username").asString()
     }
-
 
 }
