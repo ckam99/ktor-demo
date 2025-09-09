@@ -27,7 +27,7 @@ fun Route.userRoute(
     userService: UserService
 ){
 
-    fun extractPrincipalUsername(call: RoutingCall): User? {
+    suspend fun extractPrincipalUsername(call: RoutingCall): User? {
         val username = call.principal<JWTPrincipal>()
             ?.payload
             ?.getClaim("username")?.asString()
@@ -39,7 +39,7 @@ fun Route.userRoute(
         val body = call.receive<UserRequest>()
         val createdUser = userService.save(
             user = body.toModel()
-        ) ?: return@post call.respond(HttpStatusCode.BadRequest)
+        )
         call.response.header(name = "id", value = createdUser.id.toString())
         call.respond(HttpStatusCode.Created)
     }

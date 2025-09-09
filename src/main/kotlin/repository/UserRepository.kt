@@ -3,18 +3,19 @@ package com.example.repository
 import com.example.models.User
 import java.util.UUID
 
-class UserRepository {
+interface UserRepository {
 
-    private val users = mutableListOf(
-        User(name = "Administrator", email = "admin@mail.com", password =  "password",  role = "ADMIN",),
-        User(name = "UG", email = "ug@mail.com", password =  "password",  role = "USER",)
-    )
 
-    fun findAll(): List<User> = users
+    suspend fun create(user: User): UUID
 
-    fun findById(id: UUID): User? = users.firstOrNull { it.id == id }
+    suspend fun findAll(): List<User>
 
-    fun findByEmail(email: String): User? = users.firstOrNull { it.email == email }
+    suspend fun findById(id: UUID): User?
 
-    fun save(user: User): Boolean  = users.add(user)
+    suspend fun findByEmail(email: String): User?
+
+    suspend fun update(id: UUID, user: User)
+
+    suspend fun delete(id: UUID)
+
 }

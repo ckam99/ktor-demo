@@ -2,6 +2,7 @@ package com.example
 
 import com.example.config.Config
 import com.example.config.JwtConfig
+import com.example.plugins.configureDatabases
 import com.example.plugins.configureSecurity
 import com.example.plugins.configureLogging
 import com.example.plugins.configureRequestValidation
@@ -9,6 +10,7 @@ import com.example.plugins.configureRouting
 import com.example.plugins.configureSerialization
 import com.example.plugins.configureErrorHandling
 import com.example.plugins.configureWebSockets
+import com.example.repository.ExposedUserRepository
 import com.example.repository.UserRepository
 import com.example.service.JwtService
 import com.example.service.UserService
@@ -31,10 +33,11 @@ fun Application.module() {
         )
     )
 
-    val userRepository = UserRepository()
+    val userRepository = ExposedUserRepository()
     val userService = UserService(userRepository)
     val jwtService = JwtService(config = config.jwt, userService = userService)
 
+    configureDatabases()
     configureSecurity(jwtService)
     configureLogging()
     configureWebSockets(userService, jwtService)
