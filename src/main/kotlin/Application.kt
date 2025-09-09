@@ -11,11 +11,16 @@ import com.example.plugins.configureSerialization
 import com.example.plugins.configureErrorHandling
 import com.example.plugins.configureWebSockets
 import com.example.repository.ExposedUserRepository
+import com.example.repository.JooqUserRepository
 import com.example.repository.UserRepository
 import com.example.service.JwtService
 import com.example.service.UserService
 import io.ktor.server.application.*
 import io.ktor.server.config.getAs
+import org.jooq.DSLContext
+import org.jooq.SQLDialect
+import org.jooq.impl.DSL
+import java.sql.DriverManager
 
 fun main(args: Array<String>) {
     io.ktor.server.netty.EngineMain.main(args)
@@ -33,11 +38,13 @@ fun Application.module() {
         )
     )
 
-    val userRepository = ExposedUserRepository()
+    val dsl: DSLContext = configureDatabases()
+
+     // val userRepository = ExposedUserRepository()
+     val userRepository = JooqUserRepository(dsl)
     val userService = UserService(userRepository)
     val jwtService = JwtService(config = config.jwt, userService = userService)
 
-    configureDatabases()
     configureSecurity(jwtService)
     configureLogging()
     configureWebSockets(userService, jwtService)
@@ -46,3 +53,5 @@ fun Application.module() {
     configureErrorHandling()
     configureRequestValidation()
 }
+
+
