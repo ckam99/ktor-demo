@@ -5,7 +5,6 @@ import com.example.routing.defaultRoute
 import com.example.routing.userRoute
 import com.example.service.JwtService
 import com.example.service.UserService
-import com.example.websocket.registerChatWebsocket
 import io.ktor.server.application.*
 import io.ktor.server.routing.*
 

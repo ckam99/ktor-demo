@@ -2,6 +2,7 @@ package com.example
 
 import com.example.config.Config
 import com.example.config.JwtConfig
+import com.example.plugins.configureCors
 import com.example.plugins.configureDatabases
 import com.example.plugins.configureSecurity
 import com.example.plugins.configureLogging
@@ -41,6 +42,7 @@ fun Application.module() {
     val userService = UserService(userRepository)
     val jwtService = JwtService(config = config.jwt, userService = userService)
 
+    configureCors()
     configureOpenApi()
     configureSecurity(jwtService)
     configureLogging()
