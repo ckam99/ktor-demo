@@ -1,6 +1,7 @@
 package com.example.plugins
 
 import com.example.routing.authRoute
+import com.example.routing.defaultRoute
 import com.example.routing.userRoute
 import com.example.service.JwtService
 import com.example.service.UserService
@@ -13,6 +14,8 @@ fun Application.configureRouting(
     jwtService: JwtService
 ) {
     routing {
+
+        defaultRoute()
 
         route("/auth"){
             authRoute(userService,jwtService)
