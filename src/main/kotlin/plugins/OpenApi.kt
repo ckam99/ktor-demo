@@ -10,7 +10,7 @@ fun Application.configureOpenApi(){
     routing {
         openAPI(
             path = "/docs",
-            swaggerFile = "openapi/generated.json"
+            swaggerFile = "openapi/generated.json",
         )
 
         swaggerUI(
