@@ -9,6 +9,7 @@ import com.example.plugins.configureRequestValidation
 import com.example.plugins.configureRouting
 import com.example.plugins.configureSerialization
 import com.example.plugins.configureErrorHandling
+import com.example.plugins.configureOpenApi
 import com.example.plugins.configureWebSockets
 import com.example.repository.JooqUserRepository
 import com.example.service.JwtService
@@ -40,6 +41,7 @@ fun Application.module() {
     val userService = UserService(userRepository)
     val jwtService = JwtService(config = config.jwt, userService = userService)
 
+    configureOpenApi()
     configureSecurity(jwtService)
     configureLogging()
     configureWebSockets(userService, jwtService)

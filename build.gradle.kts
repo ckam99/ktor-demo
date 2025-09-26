@@ -51,9 +51,12 @@ dependencies {
 
     implementation(libs.hikari)
 
+    implementation(libs.ktor.server.openapi)
+    implementation(libs.ktor.server.swagger)
+    implementation(libs.swagger.codegen)
 }
 
-
+// region environment loading
 val dotenvFile = file(".env")
 val envMap = dotenvFile.takeIf { it.exists() }?.readLines()
     ?.filter { it.isNotBlank() && !it.startsWith("#") }
@@ -61,7 +64,6 @@ val envMap = dotenvFile.takeIf { it.exists() }?.readLines()
         val (k, v) = it.split("=", limit = 2)
         k.trim() to v.trim()
     } ?: emptyMap()
-
 fun env(key: String, default: String = ""): String =
     System.getenv(key) ?: envMap[key] ?: default
 
@@ -72,6 +74,9 @@ val dbUser = env("DB_USER", "postgres")
 val dbPassword = env("DB_PASSWORD", "")
 val dbUrl = "jdbc:postgresql://$dbHost:$dbPort/$dbName"
 val migrationTable = "migrations"
+
+// endregion
+
 flyway {
     driver = "org.postgresql.Driver"
     url = dbUrl
@@ -113,6 +118,20 @@ jooq {
 //            }
         }
     }
+}
+
+ktor {
+    @OptIn(io.ktor.plugin.OpenApiPreview::class)
+    openApi {
+        title = "OpenAPI example"
+        version = "2.1"
+        summary = "This is a sample API"
+    }
+}
+
+
+tasks.processResources {
+    dependsOn("buildOpenApi")
 }
 
 tasks.named("jooqCodegen") {
