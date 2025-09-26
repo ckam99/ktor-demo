@@ -38,8 +38,8 @@ jooq-core = { module = "org.jooq:jooq", version.ref = "jooq" }
 hikari = { module = "com.zaxxer:HikariCP", version.ref = "hikari" }
 # docs
 ktor-server-openapi = { module = "io.ktor:ktor-server-openapi", version.ref = "ktor" }
+ktor-server-swagger = { module = "io.ktor:ktor-server-swagger", version.ref = "ktor" }
 swagger-codegen = { module = "io.swagger.codegen.v3:swagger-codegen", version.ref = "swagger-codegen" }
-
 
 [plugins]
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
