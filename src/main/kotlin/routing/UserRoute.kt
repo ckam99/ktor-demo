@@ -1,6 +1,5 @@
 package com.example.routing
 
-import com.auth0.jwt.interfaces.Claim
 import com.example.models.User
 import com.example.plugins.authorized
 import com.example.routing.request.UserRequest
@@ -44,13 +43,29 @@ fun Route.userRoute(
         call.respond(HttpStatusCode.Created)
     }
 
+    /**
+     * Get all users.
+     *
+     * @tags *Users
+     * @description  API allows to fetch all users
+     * @query email The Email of the user
+     * @response 200 array [UserResponse] The user.
+     */
     get {
         val users = userService.findAll().map { it.toResponse() }
         call.respond(users)
     }
 
    authenticate {
-
+// // * @security BearerAuth, ApiKeyAuth
+       /**
+        * Get current user.
+        *
+        * @description  get connected user
+        * @tags users, catalog 🏷️
+        * @security BearerAuth
+        * @response 200 [UserResponse] The user.
+        */
        get("/me"){
            val user = extractPrincipalUsername(call)
                ?: return@get call.respond(HttpStatusCode.Unauthorized)
@@ -63,6 +78,15 @@ fun Route.userRoute(
            }
        }
 
+       /**
+        * Get a single user.
+        *
+        * @tags *Users
+        * @description  API allows to find user by id.
+        * @path id The ID of the user
+        * @response 404 The user was not found
+        * @response 200 [UserResponse] The user.
+        */
        get("/{id}") {
            val id = call.parameters["id"]
                ?: return@get call.respond(HttpStatusCode.BadRequest)

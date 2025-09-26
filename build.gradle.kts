@@ -53,8 +53,8 @@ dependencies {
 
     implementation(libs.ktor.server.openapi)
     implementation(libs.ktor.server.swagger)
-    implementation(libs.swagger.codegen)
-
+  //  implementation(libs.swagger.codegen)
+    implementation(libs.swagger.codegen.generators)
     implementation(libs.ktor.server.cors)
 }
 
@@ -128,9 +128,15 @@ ktor {
         title = "OpenAPI example"
         version = "2.1"
         summary = "This is a sample API"
+        description = "This is a longer description"
+        termsOfService = "https://example.com/terms/"
+        contact = "contact@example.com"
+        license = "Apache/1.0"
+
+        // Location of the generated specification (defaults to openapi/generated.json)
+       // target = project.layout.buildDirectory.file("open-api.json")
     }
 }
-
 
 tasks.processResources {
     dependsOn("buildOpenApi")

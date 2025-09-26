@@ -38,3 +38,5 @@ out/
 
 uploads
 .env
+docs
+.kotlin

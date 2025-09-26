@@ -9,7 +9,8 @@ h2 = "2.3.232"
 flyway = "11.12.0"
 jooq = "3.20.6"
 hikari = "7.0.2"
-swagger-codegen = "3.0.71"
+swagger_codegen = "3.0.71" # le coeur
+swagger_codegen_generators = "1.0.57" # pour faciliter la maintenance et la personnalisation et souvent mise à jours
 
 [libraries]
 ktor-server-core = { module = "io.ktor:ktor-server-core", version.ref = "ktor" }
@@ -40,7 +41,9 @@ hikari = { module = "com.zaxxer:HikariCP", version.ref = "hikari" }
 # docs
 ktor-server-openapi = { module = "io.ktor:ktor-server-openapi", version.ref = "ktor" }
 ktor-server-swagger = { module = "io.ktor:ktor-server-swagger", version.ref = "ktor" }
-swagger-codegen = { module = "io.swagger.codegen.v3:swagger-codegen", version.ref = "swagger-codegen" }
+swagger-codegen = { module = "io.swagger.codegen.v3:swagger-codegen", version.ref = "swagger_codegen" }
+swagger-codegen-generators = { module = "io.swagger.codegen.v3:swagger-codegen-generators", version.ref = "swagger_codegen_generators" }
+
 
 [plugins]
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }

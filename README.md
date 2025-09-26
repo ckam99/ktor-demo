@@ -39,3 +39,11 @@ If the server starts successfully, you'll see the following output:
 2024-12-04 14:32:45.682 [main] INFO  Application - Responding at http://0.0.0.0:8080
 ```
 
+
+*Remarque*:
+ 
+If you are any problem running application, run below command to clean et rebuild:
+
+```bash
+./gradlew clean && ./gradlew jooqCodegen && ./gradlew buildOpenApi
+```
